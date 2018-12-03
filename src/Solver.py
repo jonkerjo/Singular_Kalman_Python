@@ -41,16 +41,11 @@ def prox_vars(z,N,n,m):
     :param m: size of measurments
     :return: u,t,x
     """
-
-    u = np.zeros(N*n)
-    t = np.zeros(N*m)
-    x = np.zeros(N*n)
-    c = 2*n+m
-    for i in range(0,N):
-        u[i*n:(i+1)*n] = z[i*c:i*c+n]
-        t[i*m:(i+1)*m] = z[i*c+n:i*c+n+m]
-        x[i*n:(i+1)*n] = z[i*c+n+m:(i+1)*c]
-    return u,t,x
+    temp = z.reshape((2*n+m,N),order='F')
+    u = temp[0:n,:]
+    t = temp[n:n+m,:]
+    x = temp[n+m:n+m+n,:]
+    return u.ravel(order='F'),t.ravel(order='F'),x.ravel(order='F')
 
 def woven_var(u,t,x,N,n,m):
     """
@@ -63,14 +58,11 @@ def woven_var(u,t,x,N,n,m):
     :param m: size of meas
     :return: var z
     """
-
-    c = 2*n+m
-    z = np.zeros(N*(2*n+m))
-    for i in range(0,N):
-        z[i*c:i*c+n] = u[i*n:(i+1)*n]
-        z[i*c+n:i*c+n+m] = t[i*m:(i+1)*m]
-        z[i*c+n+m:(i+1)*c] = x[i*n:(i+1)*n]
-    return z
+    u = u.reshape((n,N), order='F')
+    t = t.reshape((m,N), order='F')
+    x = x.reshape((n,N), order='F')
+    z = np.concatenate((u,t,x),axis=0)
+    return z.ravel(order='F')
 
 
 def prox_sum(z,sigma,prox_rho1,prox_rho2,prox_rho3,m,n,N):

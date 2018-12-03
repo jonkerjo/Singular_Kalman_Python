@@ -84,11 +84,17 @@ class Blk_Bd_Mat:
                 print("Vector is the wrong size")
                 return None
 
-            x_out[(N-1)*r:N*r] = np.linalg.lstsq(np.transpose(D[N-1]),b[(N-1)*c:N*c],rcond=None)[0]
+            if r != c:
+                x_out[(N-1)*r:N*r] = np.linalg.lstsq(np.transpose(D[N-1]),b[(N-1)*c:N*c],rcond=None)[0]
+            else:
+                x_out[(N - 1) * r:N * r] = np.linalg.solve(np.transpose(D[N-1]),b[(N-1)*c:N*c])
             x_lag = x_out[(N-1)*r:N*r]
             for i in range(0,N-1):
                 k = N-2-i # what we are iterating over
-                x_out[k*r:(k+1)*r] = np.linalg.lstsq(np.transpose(D[k]),b[k*c:(k+1)*c] - np.dot(np.transpose(O[k]),x_lag),rcond=None)[0]
+                if r != c:
+                    x_out[k*r:(k+1)*r] = np.linalg.lstsq(np.transpose(D[k]),b[k*c:(k+1)*c] - np.dot(np.transpose(O[k]),x_lag),rcond=None)[0]
+                else:
+                    x_out[k*r:(k+1)*r] = np.linalg.solve(np.transpose(D[k]),b[k*c:(k+1)*c] - np.dot(np.transpose(O[k]),x_lag))
                 x_lag = x_out[k*r:(k+1)*r]
         else:
             # now solve forward
@@ -96,10 +102,16 @@ class Blk_Bd_Mat:
             if b.shape[0] != N*r:
                 print("Vector is the wrong size")
                 return None
-            x_out[0:c] = np.linalg.lstsq(D[0],b[0:r],rcond=None)[0]
+            if r != c:
+                x_out[0:c] = np.linalg.lstsq(D[0],b[0:r],rcond=None)[0]
+            else:
+                x_out[0:c] = np.linalg.solve(D[0],b[0:r])
             x_lag = x_out[0:c]
             for i in range(1,N):
-                x_out[i*c:(i+1)*c] = np.linalg.lstsq(D[i],b[i*r:(i+1)*r] - np.dot(O[i-1],x_lag),rcond=None)[0]
+                if r != c:
+                    x_out[i*c:(i+1)*c] = np.linalg.lstsq(D[i],b[i*r:(i+1)*r] - np.dot(O[i-1],x_lag),rcond=None)[0]
+                else:
+                    x_out[i*c:(i+1)*c] = np.linalg.solve(D[i],b[i*r:(i+1)*r] - np.dot(O[i-1],x_lag))
                 x_lag = x_out[i*c:(i+1)*c]
 
         return x_out
