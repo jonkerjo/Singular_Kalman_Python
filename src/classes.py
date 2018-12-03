@@ -284,7 +284,7 @@ def Kalman_Setup(n, m, N, G, sqrtQ, H, sqrtR, meas, x0):
     c = 2*n + m # number of columns in a block
 
     w_hat = np.zeros(N*(n+m))
-    w_hat[0:n] = x0
+    w_hat[0:r] = np.concatenate((x0,meas[0]),axis=0)
     for i in range(0,N):
         # create the diag block
         Drow1 = np.concatenate((sqrtQ[i],np.zeros((n,m)),np.identity(n)),axis=1)
@@ -314,10 +314,10 @@ def Kalman_extractor(z,N,n,m):
     :return: x a n x N matrix with states as columns
     """
 
-    x = np.zeros((n,N))
-    c = 2*n+m
-    for i in range(0,N):
-        x[:,i] = z[i*c+n+m:(i+1)*c]
+    x = z.reshape((2*n+m,N),order='F')[n+m:n+m+n,:]
+    # c = 2*n+m
+    # for i in range(0,N):
+    #     x[:,i] = z[i*c+n+m:(i+1)*c]
 
     return x
 
