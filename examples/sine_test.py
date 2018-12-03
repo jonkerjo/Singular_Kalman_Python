@@ -7,11 +7,16 @@ For this example we use the least squares penalty
 """
 
 
-import classes
+
+import sys
+sys.path.append("../src")
+
 import numpy as np
-import Solver
 import math
 import matplotlib.pyplot as plt
+
+import classes
+import Solver
 
 
 n = 2
