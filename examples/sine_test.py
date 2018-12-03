@@ -61,7 +61,6 @@ def main():
     # create initial state
     x0 = np.array([1.,0.])
 
-
     # create structures to pass into the solver
     A,w,AAT = classes.Kalman_Setup(n,m,N,G,sqrtQ,H,sqrtR,meas,x0)
 

@@ -26,7 +26,7 @@ import Solver
 
 
 def main():
-    n = 2
+    n = 2 # state is vel; pos
     m = 1
     N = 300
     dt = .1
