@@ -191,7 +191,7 @@ def main():
 
     # Acceleration plot
     plt.figure(3)
-    plt.plot(x_axis,x_l2[2,:],'b-',label='L2 Esteimate')
+    plt.plot(x_axis,x_l2[2,:],'b-',label='L2 Estimate')
     plt.plot(x_axis,x_robust[2,:],'g',label='Robust Estimate')
     plt.plot(x_axis,true_accel,'k',label='Ground Truth')
     plt.plot(x_axis,meas_accel,'r+',markersize=2,label='Observed Data')
