@@ -1,2 +1,2 @@
 # Singular Kalman Solver
-Solver for robust extension of Kalman filter detailed [here](https://arxiv.org/pdf/1803.02525.pdf)
+Solver for robust extension of Kalman filter detailed [here](http://www.optimization-online.org/DB_FILE/2019/01/7044.pdf)
